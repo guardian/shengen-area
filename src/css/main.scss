@@ -1,0 +1,90 @@
+@import "fonts";
+
+
+body {
+    background: white;
+}
+
+.header {
+    font-size: 18px;
+    border-bottom: 1px solid #dfdfdf;
+    line-height: 22px;
+    padding-bottom: 6px;
+    margin-bottom: 12px;
+    max-width: 620px;
+    margin-top: 6px;
+}
+.map {
+    max-width: 620px;
+    overflow: hidden;
+    background: white;
+    position: relative;
+}
+
+.borders-list {
+    border-top: 1px solid #dfdfdf;
+    list-style-type: none;
+    margin: 12px 0;
+    padding: 0;
+    padding-top: 6px;
+    color: #767676;
+    font-size: 15px;
+    @include fs-textSans(3);
+    > li {
+        margin-top: 6px;
+        &:hover {
+            color: #333;
+        }
+    }
+    span {
+        font-weight: 600;
+        margin-right: 5px;
+    }
+    p {
+        display: inline;
+    }
+    h3, p {
+        line-height: 19px;
+    }
+}
+
+.key {
+    position: absolute;
+    top: 0;
+    left: 0;
+    @include fs-textSans(3);
+    color: #767676;
+    span {
+        display: inline-block;
+        vertical-align: middle;
+        margin-top: -3px;
+        width: 16px;
+        height: 16px;
+        background-color: #e0e0e0;
+    }
+}
+
+.debug {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 20px;
+    padding: 12px 10px;
+    background: white;
+    color: #333;
+    border: 1px solid hotpink;
+    margin: 0;
+}
+
+.credit {
+    color: #767676;
+    @include fs-textSans(1);
+    margin: 0 0;
+    padding-top: 6px;
+    border-top: 2px solid #f1f1f1;
+    max-width: 620px;
+}
+
+.border-highlight {
+    stroke: #ee5b94 !important;
+}
