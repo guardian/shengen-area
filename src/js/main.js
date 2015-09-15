@@ -43,9 +43,9 @@ export function init() {
 		bordersListEl.innerHTML = borderControls.map(border =>
 			`<li pathids="${border.ids}"><p><span>${border.name}</span>${border.desc}</p></li>`
 		).join('');
-		iframeMessenger.resize();
 
-		var bordersEls = [...bordersListEl.querySelectorAll('li')];
+		iframeMessenger.resize();
+		var bordersEls = [].slice.call(bordersListEl.querySelectorAll('li'));
 		bordersEls.forEach(el => {
 			el.addEventListener('mouseenter', evt => {
 				evt.target.getAttribute('pathids').split(',').forEach(id =>
@@ -53,7 +53,7 @@ export function init() {
 				)
 			})
 			el.addEventListener('mouseleave', evt => {
-				var highlighted = [...document.querySelectorAll('.border-highlight')];
+				var highlighted = [].slice.call(document.querySelectorAll('.border-highlight'));
 				highlighted.forEach(el => el.removeAttribute('class'))
 			})
 
