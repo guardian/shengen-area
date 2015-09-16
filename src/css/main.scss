@@ -51,6 +51,7 @@ body {
 
 .key {
     position: absolute;
+    z-index: 2;
     top: 0;
     left: 0;
     @include fs-textSans(3);
