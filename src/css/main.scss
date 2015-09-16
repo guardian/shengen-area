@@ -25,6 +25,7 @@ body {
     border-top: 1px solid #dfdfdf;
     list-style-type: none;
     margin: 12px 0;
+    margin-top: 0;
     padding: 0;
     padding-top: 6px;
     color: #767676;
@@ -60,7 +61,11 @@ body {
         margin-top: -3px;
         width: 16px;
         height: 16px;
+        margin-right: 4px;
         background-color: #e0e0e0;
+    }
+    .key__obligated span {
+        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wkQCjQCKgYmuQAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAABASURBVCjP7ZDBDQAgDAKvnYT9p+oK3cCf0cSHfI08yZEA0d0AUFWSWHR00qIlpUUDadFAzA2X3dKit8B/6e2XBo0Yi3ebLBFrAAAAAElFTkSuQmCC);
     }
 }
 
@@ -85,6 +90,15 @@ body {
     max-width: 620px;
 }
 
-.border-highlight {
-    stroke: #ee5b94 !important;
+.border-highlight { stroke: #ee5b94 !important; }
+.border-debug { stroke: hotpink !important; }
+
+
+@media (max-width: 380px) {
+    .key {
+        font-size: 12px;
+    }
+    .country-labels {
+        font-size: 18px;
+    }
 }

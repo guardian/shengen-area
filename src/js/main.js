@@ -16,10 +16,15 @@ function debounce(func, wait, immediate) {
 	};
 };
 
-function highlightBorders({ids, description}) {
+function highlightBorders({ids, description, open}) {
 	ids.forEach(id => {
 		var path = document.getElementById(id);
-		path.setAttribute('stroke', 'black');
+		path.setAttribute('stroke-width', 1.5);
+		if (open) {
+			path.setAttribute('stroke', '#298422');
+		} else {
+			path.setAttribute('stroke', '#c5230e');
+		}
 	})
 }
 
@@ -31,11 +36,12 @@ export function init() {
 	reqwest({
 		url: url
 	}).then(response => {
-		var borderControls = response.sheets.Sheet1.map(borderControl => {
+		var borderControls = response.sheets.borders.map(borderControl => {
 			return {
 				ids: borderControl.border_ids.trim().split(',').map(id => id.trim()),
 				name: borderControl.name,
-				desc: borderControl.description
+				desc: borderControl.description,
+				open: !!borderControl.open
 			};
 		})
 
@@ -44,8 +50,8 @@ export function init() {
 			`<li pathids="${border.ids}"><p><span>${border.name}</span>${border.desc}</p></li>`
 		).join('');
 
-		iframeMessenger.resize();
 		var bordersEls = [].slice.call(bordersListEl.querySelectorAll('li'));
+
 		bordersEls.forEach(el => {
 			el.addEventListener('mouseenter', evt => {
 				evt.target.getAttribute('pathids').split(',').forEach(id =>
@@ -56,8 +62,31 @@ export function init() {
 				var highlighted = [].slice.call(document.querySelectorAll('.border-highlight'));
 				highlighted.forEach(el => el.removeAttribute('class'))
 			})
-
 		})
+
+		var textNodes = [].slice.call(document.querySelectorAll('text'))
+		var textNodesByName = {}; textNodes.forEach(node => textNodesByName[node.textContent] = node)
+
+		var labelsToDisplay = response.sheets.labels.filter(label => label.display).map(label => label.country)
+		var nodesToDisplay = textNodes
+			.filter(node => labelsToDisplay.indexOf(node.textContent) !== -1)
+
+		var hoverableCountries = [].slice.call(document.querySelectorAll('path[country]'))
+		hoverableCountries
+			.filter(node => labelsToDisplay.indexOf(node.getAttribute('country')) === -1)
+			.forEach(node => {
+				var text = node.getAttribute('country');
+				var labelNode = textNodesByName[text];
+				if (labelNode) {
+					labelNode.style['pointer-events'] = 'none';
+					node.addEventListener('mouseenter', evt =>  labelNode.style.display = 'block')
+					node.addEventListener('mouseleave', evt => labelNode.style.display = 'none')
+				}
+			})
+
+		nodesToDisplay.forEach(node => node.style.display = 'block')
+
+		iframeMessenger.resize();
 	});
 
 	var onResize = evt => {
@@ -75,8 +104,8 @@ export function init() {
 		document.getElementById('borders').addEventListener('mouseover', evt => {
 			if (/path/i.test(evt.toElement.tagName)) {
 				debugEl.innerHTML = evt.toElement.id;
-				if (lastEl) lastEl.removeAttribute('stroke');
-				evt.toElement.setAttribute('stroke', 'hotpink');
+				if (lastEl) lastEl.setAttribute('class', '');
+				evt.toElement.setAttribute('class', 'border-debug');
 				lastEl = evt.toElement;
 			}
 		})
